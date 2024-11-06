@@ -3,25 +3,73 @@ version: '3'
 volumes:
   pg_data:
   static:
+  media:
 
 services:
   db:
     image: postgres:13
+    env_file: .env
     volumes:
       - pg_data:/var/lib/postgresql/data
+
   backend:
     build: ./backend/
     env_file: .env
-  frontend:
-    env_file: .env
-    build: ./frontend/
-    command: cp -r /app/build/. /static/
+    depends_on:
+      - db
     volumes:
-      - static:/static
+      - static:/app/backend_static        # Volume для статики админки
+      - media:/app/media           # Volume для файлов, загружаемых пользователями
+    ports:
+      - "8000:8000"
+
+  frontend:
+    build: ./frontend/
+    env_file: .env
+    command: cp -r /app/build/. /frontend_static/
+    volumes:
+      - static:/frontend_static             # Volume для статики фронтенда
+    ports:
+      - "3000:3000"                # Порт для фронтенда (если требуется для разработки)
+
   gateway:
     build: ./nginx/
     env_file: .env
     ports:
-      - 9000:80
+      - "9000:80"
+    depends_on:
+      - backend
     volumes:
-      - static:/static
+      - static:/static             # Подключение статики для Nginx
+      - media:/media               # Подключение медиа для Nginx
+
+
+
+
+# version: '3'
+
+# volumes:
+#   pg_data:
+#   static:
+
+# services:
+#   db:
+#     image: postgres:13
+#     volumes:
+#       - pg_data:/var/lib/postgresql/data
+#   backend:
+#     build: ./backend/
+#     env_file: .env
+#   frontend:
+#     env_file: .env
+#     build: ./frontend/
+#     command: cp -r /app/build/. /static/
+#     volumes:
+#       - static:/static
+#   gateway:
+#     build: ./nginx/
+#     env_file: .env
+#     ports:
+#       - 9000:80
+#     volumes:
+#       - static:/static
