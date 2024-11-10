@@ -13,7 +13,7 @@ services:
       - pg_data:/var/lib/postgresql/data
 
   backend:
-    image: wormkey/kittygram_backend
+    image: wormkey/kittygram_final
     env_file: .env
     depends_on:
       - db
