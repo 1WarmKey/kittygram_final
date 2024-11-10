@@ -1,8 +1,8 @@
 version: '3'
 
 volumes:
-  pg_data:
-  collected_static:
+  pg_data_production:
+  static_volume:
   media:
 
 services:
@@ -10,15 +10,15 @@ services:
     image: postgres:13
     env_file: .env
     volumes:
-      - pg_data:/var/lib/postgresql/data
+      - pg_data_production:/var/lib/postgresql/data
 
   backend:
-    image: wormkey/kittygram_final
+    image: wormkey/kittygram_backend
     env_file: .env
     depends_on:
       - db
     volumes:
-      - collected_static:/app/collected_static
+      - static_volume:/backend_static
       - media:/app/media
 
   frontend:
@@ -26,7 +26,7 @@ services:
     env_file: .env
     command: cp -r /app/build/. /frontend_static/
     volumes:
-      - collected_static:/frontend_static
+      - static_volume:/frontend_static
 
   gateway:
     image: wormkey/kittygram_gateway
@@ -36,8 +36,120 @@ services:
     depends_on:
       - backend
     volumes:
-      - collected_static:/static
+      - static_volume:/staticfiles/
       - media:/media
+
+
+
+
+
+
+# version: '3'
+
+# volumes:
+#   pg_data:
+#   static:
+#   media:
+
+# services:
+#   db:
+#     image: postgres:13
+#     env_file: .env
+#     volumes:
+#       - pg_data:/var/lib/postgresql/data
+
+#   backend:
+#     image: wormkey/kittygram_backend
+#     env_file: .env
+#     depends_on:
+#       - db
+#     volumes:
+#       - static:/backend_static        
+#       - media:/app/media           
+
+#   frontend:
+#     image: wormkey/kittygram_frontend
+#     env_file: .env
+#     command: cp -r /app/build/. /frontend_static/
+#     volumes:
+#       - static:/staticfiles/             
+    
+
+#   gateway:
+#     image: wormkey/kittygram_gateway
+#     env_file: .env
+#     ports:
+#       - "9000:80"
+#     depends_on:
+#       - backend
+#     volumes:
+#       - static:/static             
+#       - media:/media              
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# version: '3'
+
+# volumes:
+#   pg_data:
+#   collected_static:
+#   media:
+
+# services:
+#   db:
+#     image: postgres:13
+#     env_file: .env
+#     volumes:
+#       - pg_data:/var/lib/postgresql/data
+
+#   backend:
+#     image: wormkey/kittygram_final
+#     env_file: .env
+#     depends_on:
+#       - db
+#     volumes:
+#       - collected_static:/app/collected_static
+#       - media:/app/media
+
+#   frontend:
+#     image: wormkey/kittygram_frontend
+#     env_file: .env
+#     command: cp -r /app/build/. /frontend_static/
+#     volumes:
+#       - collected_static:/frontend_static
+
+#   gateway:
+#     image: wormkey/kittygram_gateway
+#     env_file: .env
+#     ports:
+#       - "9000:80"
+#     depends_on:
+#       - backend
+#     volumes:
+#       - collected_static:/static
+#       - media:/media
 
 
 

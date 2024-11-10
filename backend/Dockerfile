@@ -10,22 +10,4 @@ RUN pip install -r requirements.txt --no-cache-dir
 
 COPY . .
 
-#GPT
-# RUN apt-get update && apt-get install -y iputils-ping
-
-
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "kittygram_backend.wsgi"]
-
-
-
-# FROM python:3.9
-
-# WORKDIR /app
-
-# COPY requirements.txt .
-
-# RUN pip install -r requirements.txt --no-cache-dir
-
-# COPY . .
-
-# CMD ["python", "manage.py", "runserver", "0:8000"]
+CMD ["gunicorn", "--bind", "0.0.0.0:9000", "kittygram_backend.wsgi"]
