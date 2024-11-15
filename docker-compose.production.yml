@@ -13,7 +13,7 @@ services:
       - pg_data_production:/var/lib/postgresql/data
 
   backend:
-    image: wormkey/kittygram_backend_new
+    image: wormkey/kittygram_backend
     env_file: .env
     depends_on:
       - db
@@ -22,14 +22,14 @@ services:
       - media:/app/media
 
   frontend:
-    image: wormkey/kittygram_frontend_new
+    image: wormkey/kittygram_frontend
     env_file: .env
     command: cp -r /app/build/. /frontend_static/
     volumes:
       - static_volume:/frontend_static
 
   gateway:
-    image: wormkey/kittygram_gateway_new
+    image: wormkey/kittygram_gateway
     env_file: .env
     ports:
       - "9000:80"
@@ -38,170 +38,3 @@ services:
     volumes:
       - static_volume:/staticfiles/
       - media:/media
-
-
-
-
-
-
-
-# version: '3'
-
-# volumes:
-#   pg_data:
-#   static:
-#   media:
-
-# services:
-#   db:
-#     image: postgres:13
-#     env_file: .env
-#     volumes:
-#       - pg_data:/var/lib/postgresql/data
-
-#   backend:
-#     image: wormkey/kittygram_backend
-#     env_file: .env
-#     depends_on:
-#       - db
-#     volumes:
-#       - static:/backend_static        
-#       - media:/app/media           
-
-#   frontend:
-#     image: wormkey/kittygram_frontend
-#     env_file: .env
-#     command: cp -r /app/build/. /frontend_static/
-#     volumes:
-#       - static:/staticfiles/             
-    
-
-#   gateway:
-#     image: wormkey/kittygram_gateway
-#     env_file: .env
-#     ports:
-#       - "9000:80"
-#     depends_on:
-#       - backend
-#     volumes:
-#       - static:/static             
-#       - media:/media              
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# version: '3'
-
-# volumes:
-#   pg_data:
-#   collected_static:
-#   media:
-
-# services:
-#   db:
-#     image: postgres:13
-#     env_file: .env
-#     volumes:
-#       - pg_data:/var/lib/postgresql/data
-
-#   backend:
-#     image: wormkey/kittygram_final
-#     env_file: .env
-#     depends_on:
-#       - db
-#     volumes:
-#       - collected_static:/app/collected_static
-#       - media:/app/media
-
-#   frontend:
-#     image: wormkey/kittygram_frontend
-#     env_file: .env
-#     command: cp -r /app/build/. /frontend_static/
-#     volumes:
-#       - collected_static:/frontend_static
-
-#   gateway:
-#     image: wormkey/kittygram_gateway
-#     env_file: .env
-#     ports:
-#       - "9000:80"
-#     depends_on:
-#       - backend
-#     volumes:
-#       - collected_static:/static
-#       - media:/media
-
-
-
-
-
-
-
-
-
-
-# version: '3'
-
-# volumes:
-#   pg_data:
-#   static:
-#   media:
-
-# services:
-#   db:
-#     image: postgres:13
-#     env_file: .env
-#     volumes:
-#       - pg_data:/var/lib/postgresql/data
-
-#   backend:
-#     image: wormkey/kittygram_backend
-#     env_file: .env
-#     depends_on:
-#       - db
-#     volumes:
-#       - static:/app/staticfiles
-#       - media:/app/media
-#     ports:
-#       - "8000:8000"
-
-#   frontend:
-#     image: wormkey/kittygram_frontend
-#     env_file: .env
-#     command: cp -r /app/build/. /staticfiles/frontend/
-#     volumes:
-#       - static:/staticfiles
-#     ports:
-#       - "3000:3000"
-
-#   gateway:
-#     image: wormkey/kittygram_gateway
-#     env_file: .env
-#     ports:
-#       - "9000:80"
-#     depends_on:
-#       - backend
-#     volumes:
-#       - static:/staticfiles
-#       - media:/media               # Подключение медиа для Nginx
