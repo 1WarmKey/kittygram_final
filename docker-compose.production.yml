@@ -13,7 +13,7 @@ services:
       - pg_data_production:/var/lib/postgresql/data
 
   backend:
-    image: wormkey/kittygram_backend
+    image: wormkey/kittygram_backend_new
     env_file: .env
     depends_on:
       - db
@@ -22,14 +22,14 @@ services:
       - media:/app/media
 
   frontend:
-    image: wormkey/kittygram_frontend
+    image: wormkey/kittygram_frontend_new
     env_file: .env
     command: cp -r /app/build/. /frontend_static/
     volumes:
       - static_volume:/frontend_static
 
   gateway:
-    image: wormkey/kittygram_gateway
+    image: wormkey/kittygram_gateway_new
     env_file: .env
     ports:
       - "9000:80"

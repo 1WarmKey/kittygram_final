@@ -11,65 +11,60 @@ services:
     env_file: .env
     volumes:
       - pg_data:/var/lib/postgresql/data
-
   backend:
     build: ./backend/
     env_file: .env
+    volumes:
+      - static:/backend_static
+      - media:/app/media
     depends_on:
       - db
-    volumes:
-      - static:/backend_static        # Volume для статики админки
-      - media:/app/media           # Volume для файлов, загружаемых пользователями
-    # ports:
-    #   - "8000:8000"
-
   frontend:
-    build: ./frontend/
     env_file: .env
-    command: cp -r /app/build/. /frontend_static/
-    volumes:
-      - static:/staticfiles/             # Volume для статики фронтенда
-    # ports:
-    #   - "3000:3000"                # Порт для фронтенда (если требуется для разработки)
-
+    build: ./frontend/
   gateway:
     build: ./nginx/
     env_file: .env
-    ports:
-      - "9000:80"
-    depends_on:
-      - backend
     volumes:
-      - static:/static             # Подключение статики для Nginx
-      - media:/media               # Подключение медиа для Nginx
+      - static:/staticfiles
+      - media:/app/media
+    ports:
+      - 9000:80
 
 
 
 
+# #Fucking start
+# # Файл docker-compose.yml
+
+# # Версия docker-compose
 # version: '3'
 
+# # Перечень volume
 # volumes:
 #   pg_data:
-#   static:
 
+# # Перечень контейнеров
 # services:
+#   # Имя и описание первого контейнера; имя выбирает разработчик. 
+#   # Это контейнер БД
 #   db:
-#     image: postgres:13
+#     # Из какого образа запустить контейнер:
+#     image: postgres:13.10
+#     # Файл (или список файлов) с переменными окружения
+#     env_file: .env
+#     # Какой volume подключить для этого контейнера
 #     volumes:
 #       - pg_data:/var/lib/postgresql/data
+#   # Имя и описание контейнера с бэкендом
 #   backend:
+#     # Из какого Dockerfile собирать образ для этого контейнера:
 #     build: ./backend/
 #     env_file: .env
+#     # Какие контейнеры нужно запустить до старта этого контейнера:
+#     depends_on:
+#       - db
+#   # Имя третьего контейнера. Это контейнер с фронтендом
 #   frontend:
 #     env_file: .env
-#     build: ./frontend/
-#     command: cp -r /app/build/. /static/
-#     volumes:
-#       - static:/static
-#   gateway:
-#     build: ./nginx/
-#     env_file: .env
-#     ports:
-#       - 9000:80
-#     volumes:
-#       - static:/static
+#     build: ./frontend/ 
